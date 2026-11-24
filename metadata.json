@@ -1,0 +1,6 @@
+{
+  "name": "Arquivo Cifra",
+  "description": "Jogo de lógica e decifração de códigos em Inglês e Espanhol com enigmas numéricos para desbloquear cofres secretos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
