@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Perfil privado do jogador autenticado no Arquivo Cifra.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Identificador único do usuário (Firebase Auth UID)."
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "description": "Nome de exibição do jogador."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 160,
+          "description": "Endereço de e-mail privado do usuário."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp de criação do perfil no servidor."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp da última atualização do perfil."
+        }
+      },
+      "required": ["uid", "displayName", "email", "createdAt", "updatedAt"]
+    },
+    "PlayerProgress": {
+      "title": "PlayerProgress",
+      "description": "Progresso criptográfico, dicas usadas, pontuação no modo infinito e preferências de áudio.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID do proprietário do progresso."
+        },
+        "solvedIds": {
+          "type": "array",
+          "description": "Lista limitada de IDs dos enigmas e cofres resolvidos."
+        },
+        "hintsUsedByLevel": {
+          "type": "object",
+          "description": "Mapa de dicas reveladas por ID de nível."
+        },
+        "omegaUnlockedWithMasterKey": {
+          "type": "boolean",
+          "description": "Indica se o Cofre Ômega foi destravado pela Chave Mestra."
+        },
+        "endlessSolvedCount": {
+          "type": "integer",
+          "description": "Quantidade total de enigmas resolvidos no Modo Infinito."
+        },
+        "endlessBestStreak": {
+          "type": "integer",
+          "description": "Maior sequência de acertos no Modo Infinito."
+        },
+        "soundEnabled": {
+          "type": "boolean",
+          "description": "Preferência de efeitos sonoros."
+        },
+        "musicEnabled": {
+          "type": "boolean",
+          "description": "Preferência de trilha sonora MPB."
+        },
+        "musicVolume": {
+          "type": "number",
+          "description": "Volume da trilha MPB entre 0 e 1."
+        },
+        "currentTrackIndex": {
+          "type": "integer",
+          "description": "Índice da faixa musical selecionada."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp de atualização no servidor."
+        }
+      },
+      "required": [
+        "uid",
+        "solvedIds",
+        "hintsUsedByLevel",
+        "omegaUnlockedWithMasterKey",
+        "endlessSolvedCount",
+        "endlessBestStreak",
+        "soundEnabled",
+        "musicEnabled",
+        "musicVolume",
+        "currentTrackIndex",
+        "updatedAt"
+      ]
+    },
+    "AdminGrant": {
+      "title": "AdminGrant",
+      "description": "Registro confiável de permissões administrativas no sistema.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID do usuário com permissão de administrador."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "description": "Identificação do administrador (ex: Lucas Admin)."
+        },
+        "grantedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID do administrador que concedeu acesso."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp de concessão no servidor."
+        }
+      },
+      "required": ["uid", "label", "grantedBy", "createdAt"]
+    },
+    "AdminAnnouncement": {
+      "title": "AdminAnnouncement",
+      "description": "Comunicado ou pista oficial publicada pelo administrador para os jogadores.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80,
+          "description": "Título do comunicado do administrador."
+        },
+        "message": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 300,
+          "description": "Conteúdo do aviso ou pista para os jogadores."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Indica se o comunicado está visível no jogo."
+        },
+        "updatedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID do administrador responsável pela última edição."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp da última atualização no servidor."
+        }
+      },
+      "required": ["title", "message", "active", "updatedBy", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Perfil privado do jogador, acessível apenas pelo proprietário ou administrador."
+    },
+    "/users/{userId}/progress/{progressId}": {
+      "schema": { "$ref": "#/entities/PlayerProgress" },
+      "description": "Estado salvo da campanha, cofres secretos e preferências do jogador."
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminGrant" },
+      "description": "Lista de administradores autorizados."
+    },
+    "/announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/AdminAnnouncement" },
+      "description": "Comunicado oficial gerenciado pelo administrador."
+    }
+  }
+}

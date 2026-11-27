@@ -1,4 +1,15 @@
-export type AppView = 'TITLE' | 'CAMPAIGN' | 'VAULTS' | 'ENDLESS' | 'RULES';
+export type AppView =
+  | 'CHAMBER'
+  | 'RULES'
+  | 'LOGIN'
+  | 'REGISTER'
+  | 'ADMIN';
+
+export type CameraPreset = 'DESK' | 'RIDDLE' | 'CAESAR' | 'VAULTS' | 'OVERVIEW';
+
+export type DockTab = 'PUZZLE' | 'WORKBENCH' | 'VAULTS' | 'MUSIC';
+
+export type GameMode = 'CAMPAIGN' | 'ENDLESS';
 
 export type CipherLanguage = 'EN' | 'ES' | 'EN / ES';
 
